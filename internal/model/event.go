@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// Common errors returned by event operations.
 var (
 	ErrEventNotFound = errors.New("event not found")
 	ErrInvalidUserID = errors.New("invalid user id")
@@ -12,6 +13,7 @@ var (
 	ErrInvalidDate   = errors.New("invalid date")
 )
 
+// Event represents a calendar event in the domain model.
 type Event struct {
 	ID     int       `json:"id"`
 	UserID int       `json:"user_id"`
@@ -19,6 +21,7 @@ type Event struct {
 	Title  string    `json:"title"`
 }
 
+// Validate checks if the Event has valid field values.
 func (e Event) Validate() error {
 	if e.UserID <= 0 {
 		return ErrInvalidUserID

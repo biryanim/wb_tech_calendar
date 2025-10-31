@@ -2,11 +2,13 @@ package converter
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/biryanim/wb_tech_calendar/internal/api/calendar/dto"
 	"github.com/biryanim/wb_tech_calendar/internal/model"
-	"time"
 )
 
+// FromCreateEventReq converts a CreateEventRequest DTO to a domain Event model.
 func FromCreateEventReq(req *dto.CreateEventRequest) (*model.Event, error) {
 	date, err := time.Parse("2006-01-02", req.Date)
 	if err != nil {
@@ -26,6 +28,7 @@ func FromCreateEventReq(req *dto.CreateEventRequest) (*model.Event, error) {
 	return event, nil
 }
 
+// ToEventResp converts a domain Event model to an Event DTO for API responses.
 func ToEventResp(event *model.Event) *dto.Event {
 	return &dto.Event{
 		ID:     event.ID,
@@ -35,6 +38,7 @@ func ToEventResp(event *model.Event) *dto.Event {
 	}
 }
 
+// FromUpdateEventReq converts an UpdateEventRequest DTO to a domain Event model.
 func FromUpdateEventReq(req *dto.UpdateEventRequest) (*model.Event, error) {
 	date, err := time.Parse("2006-01-02", req.Date)
 	if err != nil {
@@ -55,6 +59,7 @@ func FromUpdateEventReq(req *dto.UpdateEventRequest) (*model.Event, error) {
 	return event, nil
 }
 
+// ToEventsResp converts a slice of domain Event models to a slice of Event DTOs.
 func ToEventsResp(events []*model.Event) []*dto.Event {
 	result := make([]*dto.Event, 0, len(events))
 	for _, event := range events {

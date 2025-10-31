@@ -2,11 +2,12 @@ package calendar
 
 import (
 	"context"
+	"testing"
+	"time"
+
 	"github.com/biryanim/wb_tech_calendar/internal/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 func TestCreateEvent(t *testing.T) {

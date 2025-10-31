@@ -3,10 +3,11 @@ package calendar
 import (
 	"context"
 	"fmt"
-	"github.com/biryanim/wb_tech_calendar/internal/model"
-	"github.com/biryanim/wb_tech_calendar/internal/service"
 	"sync"
 	"time"
+
+	"github.com/biryanim/wb_tech_calendar/internal/model"
+	"github.com/biryanim/wb_tech_calendar/internal/service"
 )
 
 var _ service.CalendarService = (*serv)(nil)
@@ -18,6 +19,7 @@ type serv struct {
 	userEvents map[int][]int
 }
 
+// New creates and initializes a new in-memory calendar service.
 func New() *serv {
 	return &serv{
 		events:     make(map[int]*model.Event),
@@ -26,6 +28,7 @@ func New() *serv {
 	}
 }
 
+// CreateEvent creates a new calendar event and assigns it a unique ID.
 func (s *serv) CreateEvent(ctx context.Context, event *model.Event) (*model.Event, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -39,6 +42,7 @@ func (s *serv) CreateEvent(ctx context.Context, event *model.Event) (*model.Even
 	return event, nil
 }
 
+// UpdateEvent updates an existing calendar event's date and title.
 func (s *serv) UpdateEvent(ctx context.Context, event *model.Event) (*model.Event, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -58,6 +62,7 @@ func (s *serv) UpdateEvent(ctx context.Context, event *model.Event) (*model.Even
 	return curEvent, nil
 }
 
+// DeleteEvent removes a calendar event from the system.
 func (s *serv) DeleteEvent(ctx context.Context, eventID, userID int) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -84,6 +89,7 @@ func (s *serv) DeleteEvent(ctx context.Context, eventID, userID int) error {
 	return nil
 }
 
+// GetEventsForDay retrieves all events for a specific user on a given calendar day.
 func (s *serv) GetEventsForDay(ctx context.Context, userID int, date time.Time) ([]*model.Event, error) {
 	startOfDay := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, date.Location())
 	endOfDay := startOfDay.Add(24 * time.Hour)
@@ -92,6 +98,7 @@ func (s *serv) GetEventsForDay(ctx context.Context, userID int, date time.Time) 
 	return s.getEventsInRange(userID, startOfDay, endOfDay)
 }
 
+// GetEventsForWeek retrieves all events for a specific user during a 7-day period.
 func (s *serv) GetEventsForWeek(ctx context.Context, userID int, date time.Time) ([]*model.Event, error) {
 	startOfWeek := time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, date.Location())
 	endOfWeek := startOfWeek.Add(7 * 24 * time.Hour)
@@ -99,6 +106,7 @@ func (s *serv) GetEventsForWeek(ctx context.Context, userID int, date time.Time)
 	return s.getEventsInRange(userID, startOfWeek, endOfWeek)
 }
 
+// GetEventsForMonth retrieves all events for a specific user during the calendar month
 func (s *serv) GetEventsForMonth(ctx context.Context, userID int, date time.Time) ([]*model.Event, error) {
 	startOfMonth := time.Date(date.Year(), date.Month(), 1, 0, 0, 0, 0, date.Location())
 	endOfMonth := startOfMonth.AddDate(0, 1, 0)

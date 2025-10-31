@@ -13,6 +13,7 @@ build:
 
 
 check: fmt vet lint sort_import
+	go mod tidy
 
 sort_import:
 	goimports -w cmd/* internal/*

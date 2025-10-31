@@ -2,10 +2,12 @@ package service
 
 import (
 	"context"
-	"github.com/biryanim/wb_tech_calendar/internal/model"
 	"time"
+
+	"github.com/biryanim/wb_tech_calendar/internal/model"
 )
 
+// CalendarService defines the business logic interface for calendar event operations.
 type CalendarService interface {
 	CreateEvent(ctx context.Context, event *model.Event) (*model.Event, error)
 	UpdateEvent(ctx context.Context, event *model.Event) (*model.Event, error)

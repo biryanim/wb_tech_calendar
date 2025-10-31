@@ -1,9 +1,12 @@
 package main
 
 import (
+	"log"
+
+	"github.com/biryanim/wb_tech_calendar/internal/api/middleware"
+
 	"github.com/biryanim/wb_tech_calendar/internal/service/calendar"
 	"github.com/gin-gonic/gin"
-	"log"
 
 	calendarImpl "github.com/biryanim/wb_tech_calendar/internal/api/calendar"
 	"github.com/biryanim/wb_tech_calendar/internal/config"
@@ -24,7 +27,9 @@ func main() {
 		log.Fatalf("load http config: %v", err)
 	}
 
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Recovery())
+	r.Use(middleware.LoggerMiddleware())
 
 	calendarService := calendar.New()
 	calendarImpl := calendarImpl.New(calendarService)
